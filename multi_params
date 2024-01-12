@@ -5,11 +5,14 @@ pipeline {
         string(name: 'DESC', description: 'Describe about the job details')
         choice(name: ‘BRANCH’, choices: [‘Master’, ‘Dev’], description: ‘Choose the branch’)   
         password(name: ‘SONAR_SERVER_PWD’, description: ‘Enter SONAR password’)
+        booleanParam(name: ‘SKIP_TEST’, description: ‘Want to skip running Test cases?’)
+
         }
     stages {
         stage('Printing name') {
             steps {
                 script {
+                    if($params.SKIP_TEST == 'NO'){
                     def name = "${params.NAME}"
                     def desc = "${params.DESC}"
                     def branch = "$params.BRANCH}"
@@ -18,6 +21,7 @@ pipeline {
                     echo desc
                     echo branch
                     echo password
+                    }
                 }
             }
         }
